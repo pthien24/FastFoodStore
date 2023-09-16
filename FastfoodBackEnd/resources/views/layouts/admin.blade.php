@@ -29,7 +29,9 @@
             <hr />
             <ul class="nav flex-column">
                 <li><a href="#" class="nav-link text-white">- Admin - Home</a></li>
-                <li><a href="" class="nav-link text-white">- Admin - Products</a></li>
+                <li><a href="{{route('admin.products.index')}}" class="nav-link text-white">- Admin - Products</a></li>
+                <li><a href="{{route('admin.category.index')}}" class="nav-link text-white">- Admin - category</a></li>
+
                 <li>
                     <a href="" class="mt-2 btn bg-primary text-white">Go back to the home page</a>
                 </li>
