@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Link } from "react-router-dom";
 interface Props {
   title: string;
 }
@@ -14,9 +15,9 @@ const Breadcrumb: React.FC<Props> = ({ title }) => {
                 <a href="index_2.html" className="boxed-btn">
                   Quay Về Trang Chủ
                 </a>
-                <a href="contact.html" className="bordered-btn">
+                <Link to="../contact" className="bordered-btn">
                   Liên hệ
-                </a>
+                </Link>
               </div>
             </div>
           </div>

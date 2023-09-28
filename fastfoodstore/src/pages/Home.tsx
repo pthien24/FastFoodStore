@@ -1,18 +1,33 @@
 import * as React from "react";
 import Carousel from "react-bootstrap/Carousel";
-import bg1 from "../../assets/img/hero-1.webp";
-import bg2 from "../../assets/img/foodio-slideshow2.webp";
-import bg3 from "../../assets/img/hero-3.webp";
-import product1 from "../../assets/img/fastfood-2.webp";
-import product2 from "../../assets/img/chiken-4_0b981d04-1722-4cad-a753-26cd770dd9c7.webp";
-import ProductItem from "../../components/ProductIteam";
+import bg1 from "../assets/img/hero-1.webp";
+import bg2 from "../assets/img/foodio-slideshow2.webp";
+import bg3 from "../assets/img/hero-3.webp";
+import product1 from "../assets/img/fastfood-2.webp";
+import ProductItem from "../components/ProductIteam";
+import { Link, useNavigate } from "react-router-dom";
+import Item from "../components/Item";
+import productService, { IProduct } from "../services/productService";
+import { useEffect, useState } from "react";
 
 const Home = () => {
+  const navigate = useNavigate();
+
+  const [products, setProducts] = useState<IProduct[]>([]);
+  const showProduct = (e: React.MouseEvent, id: number) => {
+    e.preventDefault();
+    navigate(`../menu/${id}`);
+  };
+  useEffect(() => {
+    productService.listHome().then((res) => {
+      setProducts(res.data);
+    });
+  });
   return (
     <>
       <Carousel>
         <Carousel.Item>
-          <img className="d-block w-100" src={bg1} />
+          <img className="d-block w-100" src={bg1} alt="t" />
           <Carousel.Caption>
             <div className="container">
               <div className="row">
@@ -22,12 +37,12 @@ const Home = () => {
                       <p className="subtitle">Chúng tôi là nhà hàng Foodio</p>
                       <h1>Cùng Thưởng Thức những món ăn Tuyệt Vời</h1>
                       <div className="hero-btns">
-                        <a href="shop.html" className="boxed-btn">
-                          Xem thực đơn của chúng tôi
-                        </a>
-                        <a href="contact.html" className="bordered-btn">
-                          Liên hệ
-                        </a>
+                        <Link to="../menu" className="boxed-btn">
+                          Xem Thực Đơn Của chúng tôi
+                        </Link>
+                        <Link to="../contact" className="bordered-btn">
+                          Liên Hệ
+                        </Link>
                       </div>
                     </div>
                   </div>
@@ -37,7 +52,7 @@ const Home = () => {
           </Carousel.Caption>
         </Carousel.Item>
         <Carousel.Item>
-          <img className="d-block w-100" src={bg2} />
+          <img className="d-block w-100" src={bg2} alt="" />
           <Carousel.Caption>
             <div className="container">
               <div className="row">
@@ -47,12 +62,12 @@ const Home = () => {
                       <p className="subtitle">Burger Pho Mát Nướng</p>
                       <h1>Ưu Đãi Có Giới Hạn</h1>
                       <div className="hero-btns">
-                        <a href="shop.html" className="boxed-btn">
+                        <Link to="../menu" className="boxed-btn">
                           Xem Thực Đơn Của chúng tôi
-                        </a>
-                        <a href="contact.html" className="bordered-btn">
+                        </Link>
+                        <Link to="../contact" className="bordered-btn">
                           Liên Hệ
-                        </a>
+                        </Link>
                       </div>
                     </div>
                   </div>
@@ -62,7 +77,7 @@ const Home = () => {
           </Carousel.Caption>
         </Carousel.Item>
         <Carousel.Item>
-          <img className="d-block w-100" src={bg3} />
+          <img className="d-block w-100" src={bg3} alt="" />
           <Carousel.Caption>
             <div className="container">
               <div className="row">
@@ -72,12 +87,12 @@ const Home = () => {
                       <p className="subtitle">Pizza Ngập Vị Pho Mát</p>
                       <h1>Đừng Bỏ Lỡ Cơ Hội</h1>
                       <div className="hero-btns">
-                        <a href="shop.html" className="boxed-btn">
+                        <Link to="../menu" className="boxed-btn">
                           Xem Thực Đơn Của chúng tôi
-                        </a>
-                        <a href="contact.html" className="bordered-btn">
+                        </Link>
+                        <Link to="../contact" className="bordered-btn">
                           Liên Hệ
-                        </a>
+                        </Link>
                       </div>
                     </div>
                   </div>
@@ -138,11 +153,16 @@ const Home = () => {
             </div>
           </div>
           <div className="row">
-            <ProductItem
-              imageUrl={product1}
-              productName="ga ran"
-              price="12.000D"
-            />
+            {products.slice(0, 3).map((data) => (
+              <Item
+                key={data.id}
+                id={data.id}
+                title={data.name}
+                image={data.image}
+                price={data.price}
+                showProduct={showProduct} // Pass the showProduct function as a prop
+              />
+            ))}
           </div>
         </div>
       </div>

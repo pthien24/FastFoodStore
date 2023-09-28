@@ -15,7 +15,7 @@
             @endforeach
         </ul>
         @endif
-        <form method="POST" action="{{ url('api/products') }}">d
+        <form method="POST" action="{{ url('api/products') }}"  enctype="multipart/form-data">
             @csrf
             <div class="form-group">
                 <label for="name">Name</label>
@@ -55,6 +55,7 @@
                         <th>ID</th>
                         <th>Name</th>
                         <th>Description</th>
+                        <th>image</th>
                         <th class="text-right">Actions</th>
                     </tr>
                 </thead>
@@ -64,12 +65,13 @@
                         <td>{{ $products->getId() }}</td>
                         <td>{{ $products->getName() }}</td>
                         <td>{{ $products->getDescription() }}</td>
+                        <td><img src="{{ asset('/storage/' . $products->getImage()) }}"></td>
                         <td class="td-actions text-right">
                             <div class="btn-group" role="group">
                                 <a href="#" rel="tooltip" title="View Profile" class="btn btn-info btn-simple btn-xs">
                                     <i class="ti-user"></i>
                                 </a>
-                                <a href="{{ route('admin.category.edit', ['id' => $products->getId()]) }}" rel="tooltip" title="Edit Profile" class="btn btn-success btn-simple btn-xs">
+                                <a href="{{ route('admin.products.edit', ['id' => $products->getId()]) }}" rel="tooltip" title="Edit Profile" class="btn btn-success btn-simple btn-xs">
                                     <i class="ti-pencil-alt"></i>
                                 </a>
                                 <form action="{{ route('admin.category.destroy', ['id' => $products->getId()]) }}" method="POST">

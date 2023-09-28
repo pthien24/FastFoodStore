@@ -39,6 +39,7 @@ class Category extends Model
     {
         $this->attributes['description'] = $description;
     }
+
     public function getCreatedAt()
     {
         return $this->attributes['created_at'];

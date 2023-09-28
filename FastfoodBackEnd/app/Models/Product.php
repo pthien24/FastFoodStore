@@ -16,6 +16,15 @@ class Product extends Model
             'image' => 'image',
         ]);
     }
+    public function setCategory_id()
+    {
+        return $this->attributes['category_id'];
+    }
+
+    public function getCategory_id($category_id)
+    {
+        $this->attributes['category_id'] = $category_id;
+    }
     public function category()
     {
         return $this->belongsTo(Category::class, 'category_id');

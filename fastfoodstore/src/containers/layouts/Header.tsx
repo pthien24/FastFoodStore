@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 import logo from "../../assets/img/logo.png";
+
 const Header = () => {
   return (
     <div className="top-header-area" id="sticker">
@@ -10,45 +11,40 @@ const Header = () => {
             <div className="main-menu-wrap">
               {/* logo */}
               <div className="site-logo">
-                <a href="index_2.html">
+                <Link to="home">
                   <img src={logo} alt="logo" />
-                </a>
+                </Link>
               </div>
-              {/* logo */}
-              {/* menu start */}
               <nav className="main-menu">
                 <ul>
                   <li className="current-list-item">
-                    <a href="index_2.html">Trang Chủ</a>
+                    <Link to="home">Trang Chủ</Link>
                   </li>
                   <li>
-                    <a href="about.html">Giới Thiệu</a>
+                    <Link to="about">Giới Thiệu</Link>
                   </li>
                   <li>
-                    <a href="sale.html">Khuyến Mãi-Combo</a>
+                    <Link to="about">Khuyến Mãi-Combo</Link>
                   </li>
                   <li>
-                    <a href="news.html">Tin Tức</a>
+                    <Link to="news">Tin Tức</Link>
                   </li>
                   <li>
-                    <a href="contact.html">Liên Hệ</a>
+                    <Link to="contact">Liên Hệ</Link>
                   </li>
                   <li>
                     <Link to="/menu">Thực Đơn</Link>
                   </li>
                   <li>
                     <div className="header-icons">
-                      <a className="shopping-cart" href="cart.html">
-                        <i className="fas fa-shopping-cart" />
-                      </a>
-                      <a className="mobile-hide search-bar-icon" href="#">
-                        <i className="fas fa-search" />
-                      </a>
+                      <Link to="/menu">login</Link>
+                      <span>||</span>
+                      <Link to="/menu">register</Link>
                     </div>
                   </li>
                 </ul>
               </nav>
-              <a className="mobile-show search-bar-icon" href="#">
+              <a className="mobile-show search-bar-icon" href=" ">
                 <i className="fas fa-search" />
               </a>
               <div className="mobile-menu" />

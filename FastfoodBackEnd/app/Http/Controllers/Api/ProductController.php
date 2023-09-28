@@ -6,46 +6,78 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Product;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    // public function index()
+    // {
+
+    //     $product = Product::all();
+    //     if ($product->count() > 0) {
+    //         $data =[
+    //         'status' => 200,
+    //         'data' => $product,
+    //         ];
+    //         return response()->json($data, 200);
+    //     } else {
+    //         return response()->json([
+    //         'status' => 404,
+    //         'message' => 'No Records Found',
+    //         ], 404);
+    //     }
+    // }
+
+    // app/Http/Controllers/ProductController.php
+    public function index(Request $request)
     {
-        $product = Product::all();
-        if ($product->count() > 0) {
-            $data =[
-            'status' => 200,
-            'product' => $product,
-            ];
-            return response()->json($data, 200);
-        } else {
-            return response()->json([
-            'status' => 404,
-            'message' => 'No Records Found',
-            ], 404);
+        $categoryId = $request->input('category_id');
+        $searchTerm = $request->input('search_term');
+        $perPage = $request->input('per_page', 3); // Số sản phẩm mỗi trang, mặc định là 10
+
+        $query = Product::query();
+
+        if ($categoryId) {
+            $query->where('category_id', $categoryId);
         }
+
+        if ($searchTerm) {
+            $query->where('name', 'like', "%$searchTerm%");
+        }
+
+        $products = $query->paginate($perPage);
+
+        return response()->json($products);
     }
+
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:191',
             'price' => 'required',
             'description' => 'required|string|max:191',
-            'image' => 'required',
+            'image' => 'image',
         ]);
-
         if ($validator->fails()) {
             return response()->json(['status' => 422, 'errors' => $validator->messages()], 422);
         } else {
-            $product = Product::create($request->only(['name', 'price', 'description', 'image', 'category_id']));
+            $product = new Product();
+            $product->name = $request->input('name');
+            $product->price = $request->input('price');
+            $product->description = $request->input('description');
+            if ($request->hasFile('image')) {
+                $image = $request->file('image');
+                $imageName = uniqid() . '.' . $image->getClientOriginalExtension();
+                Storage::disk('public')-> put($imageName, file_get_contents($request->file('image')->getRealPath()));
+                $product->image = $imageName;
+            }
+            $product->category_id = $request->input('category_id');
         }
-
-        if ($product) {
+        if ($product->save()) {
             return response()->json(['status' => 500, 'message' => 'successfully'], 500);
-            // return redirect()->route('admin.students.index')->with('success', 'Student created successfully');
         } else {
             return response()->json(['status' => 500, 'message' => 'Something went wrong'], 500);
         }
@@ -54,7 +86,7 @@ class ProductController extends Controller
     {
         $product = Product::find($id);
         if ($product) {
-            return response()->json(['status' => 200, 'product' => $product], 200);
+            return response()->json(['status' => 200, 'data' => $product], 200);
         } else {
             return response()->json(['status' => 404, 'message' => 'no such product found'], 404);
         }

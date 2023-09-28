@@ -18,7 +18,7 @@ class CategoryController extends Controller
         if ($category->count() > 0) {
             $data =[
             'status' => 200,
-            'category' => $category,
+            'data' => $category,
             ];
             return response()->json($data, 200);
         } else {
@@ -55,7 +55,6 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-
     /**
      * Display the specified resource.
      */
