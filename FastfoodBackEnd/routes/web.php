@@ -14,13 +14,10 @@ use Illuminate\Support\Facades\Route;
 */
 use App\Http\Controllers\Admin\AdminCategoryController;
 use App\Http\Controllers\Admin\AdminProductController;
+use App\Http\Controllers\Auth\LoginController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-
-Route::prefix('admin')->group(function () {
+Route::middleware(['admin'])->prefix('admin')->group(function () {
+    // Your admin routes go here
     Route::get('/category', [AdminCategoryController::class, 'index'])->name('admin.category.index');
     Route::get('/category/create', [AdminCategoryController::class, 'create'])->name('admin.category.create');
     Route::post('/category', [AdminCategoryController::class, 'store'])->name('admin.category.store');
@@ -34,3 +31,8 @@ Route::prefix('admin')->group(function () {
     Route::put('/products/{id}', [AdminProductController::class, 'update'])->name('admin.products.update');
     Route::delete('/products/{id}', [AdminProductController::class, 'destroy'])->name('admin.products.destroy');
 });
+
+Auth::routes();
+
+Route::post('/login', [LoginController::class, 'login'])->name('login');
+// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

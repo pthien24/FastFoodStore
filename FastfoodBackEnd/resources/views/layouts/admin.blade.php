@@ -31,7 +31,6 @@
                 <li><a href="#" class="nav-link text-white">- Admin - Home</a></li>
                 <li><a href="{{route('admin.products.index')}}" class="nav-link text-white">- Admin - Products</a></li>
                 <li><a href="{{route('admin.category.index')}}" class="nav-link text-white">- Admin - category</a></li>
-
                 <li>
                     <a href="" class="mt-2 btn bg-primary text-white">Go back to the home page</a>
                 </li>
@@ -41,7 +40,10 @@
         <div class="col content-grey">
             <nav class="p-3 shadow text-end">
                 <span class="profile-font">Admin</span>
-                <img class="img-profile rounded-circle" src="{{ asset('/img/undraw_profile.svg') }}">
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit">Logout</button>
+                </form>
             </nav>
             <div class="g-0 m-5">
                 @yield('content')

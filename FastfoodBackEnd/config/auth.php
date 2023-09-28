@@ -39,6 +39,7 @@ return [
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
+
         ],
         'api' => [
             'driver' => 'token',
@@ -71,6 +72,7 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
+            'username' => 'username',
 
         ],
         'members' => [

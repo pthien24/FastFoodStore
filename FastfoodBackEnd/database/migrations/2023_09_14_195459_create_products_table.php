@@ -18,7 +18,6 @@ return new class () extends Migration {
             $table->string('image');
             $table->unsignedBigInteger('category_id'); // Foreign key
             $table->timestamps(); // Created at and updated at timestamps
-            // Define the foreign key constraint
             $table->foreign('category_id')->references('id')->on('categories');
         });
     }
