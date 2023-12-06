@@ -1,7 +1,8 @@
 type ResponseWrapper<T> = {
-  status: number;
+  errorCode: number;
   message: string;
   data: T;
   last_page: number;
+  error: string;
 };
 export default ResponseWrapper;

@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\UsersController;
 use App\Http\Controllers\Api\MembersController;
+use App\Http\Controllers\Api\CartController;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,6 +45,9 @@ Route::put('products/{id}/edit', [ProductController::class, 'update']);
 Route::delete('products/{id}/delete', [ProductController::class, 'destroy']);
 
 
+Route::post('purchase', [CartController::class, 'purchase']);
+
+
 Route::get('login', function () {
     $response = ['errorCode'=> 401,'message'=> 'Unauthencated'];
     return response()->json($response, 401);
@@ -60,4 +64,5 @@ Route::post('/member/login', [MembersController::class, 'login']);
 
 Route::group(['prefix' => 'member' , 'middleware' => 'auth:sanctum'], function () {
     Route::get('/profile', [MembersController::class , 'profile']);
+    Route::get('/historyorder', [MembersController::class, 'gethisOrder']);
 });

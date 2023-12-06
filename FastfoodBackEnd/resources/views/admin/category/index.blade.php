@@ -1,7 +1,6 @@
 <!-- resources/views/admin/students/index.blade.php -->
 @extends('layouts.admin')
 @section('content')
-<h1>Student Management</h1>
 <!-- Button trigger modal -->
 <div class="card mb-4">
     <div class="card-header">

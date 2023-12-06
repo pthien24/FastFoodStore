@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-// Define the IProduct interface
 export interface IProduct {
   id: number;
   title: string;
@@ -12,12 +11,10 @@ export interface IProduct {
   updated_at: string;
 }
 
-// Define the CartItem interface that extends IProduct and adds a quantity property
 export interface CartItem extends IProduct {
   quantity: number;
 }
 
-// Define the CartState interface with an array of CartItem
 export interface CartState {
   cart: CartItem[];
 }
@@ -60,9 +57,17 @@ const cartSlice = createSlice({
       );
       state.cart = updatedCart;
     },
+    removeAll: (state) => {
+      state.cart = [];
+    },
   },
 });
 
 export const cartReducer = cartSlice.reducer;
-export const { addToCart, incrementQuantity, decrementQuantity, removeItem } =
-  cartSlice.actions;
+export const {
+  addToCart,
+  incrementQuantity,
+  decrementQuantity,
+  removeItem,
+  removeAll,
+} = cartSlice.actions;

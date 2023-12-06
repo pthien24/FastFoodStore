@@ -30,9 +30,9 @@ function Item({ id, title, image, price, showProduct }: ItemProps) {
             dispatch(
               addToCart({
                 id,
-                title, // Include 'title' in the object
+                title,
                 price,
-                description: "", // Add description, category_id, and other required properties
+                description: "",
                 image,
                 category_id: 0,
                 created_at: "",

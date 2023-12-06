@@ -1,8 +1,21 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 import logo from "../../assets/img/logo.png";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../store";
+import { logout } from "../../store/reducers/authSlice";
 
 const Header = () => {
+  const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
+  const userName = useSelector(
+    (state: RootState) => state.auth.userInfo?.username
+  );
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    // Dispatch the "logout" action to clear the authentication state
+    dispatch(logout());
+  };
   return (
     <div className="top-header-area" id="sticker">
       <div className="container">
@@ -36,11 +49,19 @@ const Header = () => {
                     <Link to="/menu">Thực Đơn</Link>
                   </li>
                   <li>
-                    <div className="header-icons">
-                      <Link to="/menu">login</Link>
-                      <span>||</span>
-                      <Link to="/menu">register</Link>
-                    </div>
+                    {isLoggedIn ? (
+                      <div className="header-icons">
+                        <Link to="/profile">{userName}</Link>
+
+                        <button onClick={handleLogout}>Logout</button>
+                      </div>
+                    ) : (
+                      <div className="header-icons">
+                        <Link to="/login">login</Link>
+                        <span>||</span>
+                        <Link to="/register">register</Link>
+                      </div>
+                    )}
                   </li>
                 </ul>
               </nav>

@@ -2,11 +2,14 @@ import * as React from "react";
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import productService, { IProduct } from "../services/productService";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../store/reducers/carSlice";
+import { toast } from "react-toastify";
 const Product = () => {
   const [product, setProduct] = useState<IProduct | undefined>(undefined);
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   useEffect(() => {
     if (!/\d+/.test(id as string)) {
       navigate("/not-found");
@@ -16,6 +19,23 @@ const Product = () => {
       });
     }
   }, [id, navigate]);
+  const handleAddToCart = () => {
+    if (product) {
+      dispatch(
+        addToCart({
+          id: product.id,
+          title: product.name,
+          price: product.price,
+          description: product.description,
+          image: product.image,
+          category_id: product.category_id,
+          created_at: product.created_at,
+          updated_at: product.updated_at,
+        })
+      );
+      toast.success("Added to Cart Successfully");
+    }
+  };
   return (
     <>
       <div>
@@ -48,12 +68,12 @@ const Product = () => {
                   <p className="single-product-pricing">${id}</p>
                   <p>{product?.description}</p>
                   <div className="single-product-form">
-                    <form action="index.html">
+                    {/* <form action="index.html">
                       <input type="number" value={1} />
-                    </form>
-                    <a href="cart.html" className="cart-btn">
+                    </form> */}
+                    <button onClick={handleAddToCart}>
                       <i className="fas fa-shopping-cart" /> Add to Cart
-                    </a>
+                    </button>
                     <p>
                       <strong>Categories: </strong>
                       {product?.category_id}
@@ -88,74 +108,6 @@ const Product = () => {
           </div>
         </div>
         {/* end single product */}
-        {/* more products */}
-        <div className="more-products mb-150">
-          <div className="container">
-            <div className="row">
-              <div className="col-lg-8 offset-lg-2 text-center">
-                <div className="section-title">
-                  <h3>
-                    <span className="orange-text">Related</span> Products
-                  </h3>
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                    Aliquid, fuga quas itaque eveniet beatae optio.
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className="row">
-              <div className="col-lg-4 col-md-6 text-center">
-                <div className="single-product-item">
-                  <div className="product-image">
-                    <a href="single-product.html">
-                      <img src="#" alt="1" />
-                    </a>
-                  </div>
-                  <h3>Strawberry</h3>
-                  <p className="product-price">
-                    <span>Per Kg</span> 85${" "}
-                  </p>
-                  <a href="cart.html" className="cart-btn">
-                    <i className="fas fa-shopping-cart" /> Add to Cart
-                  </a>
-                </div>
-              </div>
-              <div className="col-lg-4 col-md-6 text-center">
-                <div className="single-product-item">
-                  <div className="product-image">
-                    <a href="single-product.html">
-                      <img src="#" alt="1" />
-                    </a>
-                  </div>
-                  <h3>Berry</h3>
-                  <p className="product-price">
-                    <span>Per Kg</span> 70${" "}
-                  </p>
-                  <a href="cart.html" className="cart-btn">
-                    <i className="fas fa-shopping-cart" /> Add to Cart
-                  </a>
-                </div>
-              </div>
-              <div className="col-lg-4 col-md-6 offset-lg-0 offset-md-3 text-center">
-                <div className="single-product-item">
-                  <div className="product-image">
-                    <a href="single-product.html">
-                      <img src="#" alt="p" />
-                    </a>
-                  </div>
-                  <h3>Lemon</h3>
-                  <p className="product-price">
-                    <span>Per Kg</span> 35${" "}
-                  </p>
-                  <a href="cart.html" className="cart-btn">
-                    <i className="fas fa-shopping-cart" /> Add to Cart
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </>
   );

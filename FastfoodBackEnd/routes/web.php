@@ -17,6 +17,7 @@ use App\Http\Controllers\Admin\AdminProductController;
 use App\Http\Controllers\Auth\LoginController;
 
 Route::middleware(['admin'])->prefix('admin')->group(function () {
+    Route::get('/', [AdminCategoryController::class, 'index'])->name('admin.products.index');
     // Your admin routes go here
     Route::get('/category', [AdminCategoryController::class, 'index'])->name('admin.category.index');
     Route::get('/category/create', [AdminCategoryController::class, 'create'])->name('admin.category.create');

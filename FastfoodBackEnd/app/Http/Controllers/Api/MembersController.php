@@ -15,14 +15,13 @@ class MembersController extends Controller
         'fisrtName'=>'required',
         'username'=>'required',
         'password'=>'required',
-        'email'=>'required|email',
+        'email' => 'email',
     ];
     private $messages = [
         'lastName.required'=>'last name is empty',
         'fisrtName.required'=>'fisrtName  is empty',
         'username.required'=>'username  is empty',
         'password.required'=>'password  is empty',
-        'email.email'=>'invalid email  format',
     ];
     public function register(Request $req)
     {
@@ -57,7 +56,7 @@ class MembersController extends Controller
             $data = [
                 'id' => $user->id,
                 'username' => $user->username,
-                'fullname' => $user->name,
+                'fullname' => $user->lastName ." ". $user->fisrtName,
                 'token' => $authToken,
             ];
             return BaseResponse::withData($data);
@@ -69,5 +68,11 @@ class MembersController extends Controller
     {
         $member =  $request->user();
         return BaseResponse::withData($member);
+    }
+    public function gethisOrder(Request $req)
+    {
+        $member = $req->user();
+        $orderHistory = $member->orders()->with('items.product')->get();
+        return BaseResponse::withData($orderHistory);
     }
 }

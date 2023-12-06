@@ -20,10 +20,10 @@ class BaseResponse
         $instance->message =  $message;
         return (array)$instance;
     }
-    public static function error($message, $error)
+    public static function error($error, $message)
     {
         $instance = new self();
-        $instance->error =  $error;
+        $instance->errorCode =  $error;
         $instance->message =  $message;
         return (array)$instance;
     }

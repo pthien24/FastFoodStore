@@ -36,8 +36,7 @@ class ProductController extends Controller
     {
         $categoryId = $request->input('category_id');
         $searchTerm = $request->input('search_term');
-        $perPage = $request->input('per_page', 3); // Số sản phẩm mỗi trang, mặc định là 10
-
+        $perPage = $request->input('per_page', 6);
         $query = Product::query();
 
         if ($categoryId) {
@@ -77,7 +76,7 @@ class ProductController extends Controller
             $product->category_id = $request->input('category_id');
         }
         if ($product->save()) {
-            return response()->json(['status' => 500, 'message' => 'successfully'], 500);
+            return redirect()->route('admin.products.index')->with('success', 'category created successfully');
         } else {
             return response()->json(['status' => 500, 'message' => 'Something went wrong'], 500);
         }

@@ -2,6 +2,7 @@ import React from "react";
 import {
   decrementQuantity,
   incrementQuantity,
+  removeAll,
   removeItem,
 } from "../store/reducers/carSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,9 +11,29 @@ import { RootState } from "../store";
 import Breadcrumb from "../components/Breadcrumb";
 import Total from "../components/Total";
 import { toast } from "react-toastify";
+import cartService, { PurchaseResponse } from "./../services/cartService";
 function Cart() {
   const dispatch = useDispatch();
-  const cart = useSelector((state: RootState) => state.cart);
+  const cart = useSelector((state: RootState) => state.cart.cart);
+  const handleCheckout = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const localStorageDatauser = localStorage.getItem("persist:auth");
+    const localStorageDatacart = localStorage.getItem("persist:cart");
+    if (localStorageDatauser !== null && localStorageDatacart !== null) {
+      const passdatauser = JSON.parse(localStorageDatauser);
+      const passdatacart = JSON.parse(localStorageDatacart);
+      const userInfo = JSON.parse(passdatauser.userInfo);
+      const cart = JSON.parse(passdatacart.cart);
+      console.log(cart);
+      console.log(userInfo);
+      cartService.purchase(userInfo, cart).then((response) => {
+        toast.success(response.message);
+        dispatch(removeAll());
+      });
+    } else {
+      console.log("null userInfo or cart data nu");
+    }
+  };
   return (
     <>
       <Breadcrumb title={"Mua Hang"} />
@@ -77,7 +98,11 @@ function Cart() {
               <div className="total-section">
                 <Total />
                 <div className="cart-buttons">
-                  <a href="checkout.html" className="boxed-btn black">
+                  <a
+                    href="/"
+                    onClick={handleCheckout}
+                    className="boxed-btn black"
+                  >
                     Check Out
                   </a>
                 </div>

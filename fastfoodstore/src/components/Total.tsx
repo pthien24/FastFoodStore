@@ -2,7 +2,7 @@ import { RootState } from "../store";
 import { useSelector } from "react-redux";
 
 function Total() {
-  const cart = useSelector((state: RootState) => state.cart);
+  const cart = useSelector((state: RootState) => state.cart.cart);
 
   const getTotal = () => {
     let totalQuantity = 0;

@@ -9,6 +9,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Item from "../components/Item";
 import productService, { IProduct } from "../services/productService";
 import { useEffect, useState } from "react";
+import { AxiosError } from "axios";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -18,11 +19,28 @@ const Home = () => {
     e.preventDefault();
     navigate(`../menu/${id}`);
   };
-  useEffect(() => {
-    productService.listHome().then((res) => {
+  const fetchProducts = async () => {
+    try {
+      const res = await productService.listHome();
       setProducts(res.data);
-    });
-  });
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 429) {
+          // Check the response status code
+          setTimeout(fetchProducts, 5000); // Retry after 5 seconds
+        } else {
+          // Handle other Axios errors
+          console.error("Axios error while fetching products:", error);
+        }
+      } else {
+        // Handle unknown error type
+        console.error("Unknown error type:", error);
+      }
+    }
+  };
+  useEffect(() => {
+    fetchProducts();
+  }, []);
   return (
     <>
       <Carousel>
